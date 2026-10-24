@@ -1,3 +1,4 @@
+import { localApiOnly } from './local-api-guard.mjs';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -15,6 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.use('/api', localApiOnly(() => PORT));
 const PORT = process.env.PORT || 3000;
 
 // High limit for base64 product images
@@ -310,7 +312,7 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, "127.0.0.1", () => {
     console.log(`PureProduct Studio server running at http://localhost:${PORT}`);
   });
 }
